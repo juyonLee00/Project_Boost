@@ -31,42 +31,43 @@ public class Movement : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.Space))
         {
-            playerRigidbody.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
-            if(!audioSource.isPlaying)
-            {
-                audioSource.PlayOneShot(mainEngine);
-            }
-
-            if(!mainEngineParticles.isPlaying)
-            {
-                mainEngineParticles.Play();
-            }
+            StartThrusting();
         }
         else
         {
-            audioSource.Stop();
-            mainEngineParticles.Stop();
+            StopThrusting();
         }
+    }
+
+    void StartThrusting()
+    {
+        playerRigidbody.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
+        if(!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(mainEngine);
+        }
+
+        if(!mainEngineParticles.isPlaying)
+        {
+            mainEngineParticles.Play();
+        }
+    }
+
+    void StopThrusting()
+    {
+        audioSource.Stop();
+        mainEngineParticles.Stop();
     }
 
     void ProcessRotation()
     {
         if(Input.GetKey(KeyCode.A) || (Input.GetKey(KeyCode.LeftArrow)))
         {
-            ApplyRotation(rotationThrust);
-            if(!rightThrusterParticles.isPlaying)
-            {
-                rightThrusterParticles.Play();
-            }
+            RotatePlayer(rotationThrust, leftThrusterParticles);
         }
         else if(Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.RightArrow)))
         {
-            ApplyRotation(-rotationThrust);
-            if(!leftThrusterParticles.isPlaying)
-            {
-                leftThrusterParticles.Play();
-            }
-            
+            RotatePlayer(-rotationThrust, rightThrusterParticles);
         }
         else
         {
@@ -74,6 +75,15 @@ public class Movement : MonoBehaviour
             leftThrusterParticles.Stop();
         }
     }
+
+    void RotatePlayer(float rotationTh, ParticleSystem particle) 
+        {
+            ApplyRotation(rotationTh);
+            if(!particle.isPlaying)
+            {
+                particle.Play();
+            }
+        }
 
     void ApplyRotation(float rotationThisFrame)
     {
