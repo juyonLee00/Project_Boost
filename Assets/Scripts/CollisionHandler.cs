@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CollisionHandler : MonoBehaviour
 {
@@ -18,9 +19,16 @@ public class CollisionHandler : MonoBehaviour
                         Debug.Log("This thing is fuel");
                         break;
                     default:
-                        Debug.Log("Sorry, you blew up!");
+                        ReloadLevel();
                         break;
                 }
+            }
+
+            void ReloadLevel()
+            {
+                //씬 인덱스 반환
+                int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+                SceneManager.LoadScene(currentSceneIndex);
             }
         }
     }
