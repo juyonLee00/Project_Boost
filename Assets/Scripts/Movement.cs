@@ -6,16 +6,17 @@ public class Movement : MonoBehaviour
 {
     [SerializeField] float mainThrust = 1000f;
     [SerializeField] float rotationThrust = 100f;
+    [SerializeField] AudioClip mainEngine;
+    
     Rigidbody playerRigidbody;
     AudioSource audioSource;
-    // Start is called before the first frame update
+    
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         ProcessThrust();
@@ -29,7 +30,7 @@ public class Movement : MonoBehaviour
             playerRigidbody.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
             if(!audioSource.isPlaying)
             {
-                audioSource.Play();
+                audioSource.PlayOneShot(mainEngine);
             }
         }
         else
@@ -52,10 +53,8 @@ public class Movement : MonoBehaviour
 
     void ApplyRotation(float rotationThisFrame)
     {
-        //수동 제어를 위한 회전 고정
         playerRigidbody.freezeRotation = true;
         transform.Rotate(Vector3.forward * rotationThisFrame * Time.deltaTime);
-        //물리 시스템이 고정되도록 회전 고정 해제
         playerRigidbody.freezeRotation = false;
     }
 }
