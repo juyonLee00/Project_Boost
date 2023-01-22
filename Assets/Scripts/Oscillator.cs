@@ -19,6 +19,11 @@ public class Oscillator : MonoBehaviour
 
     void Update()
     {
+        if(period <= Mathf.Epsilon)
+        {
+            return;
+        }
+
         //시간에 따라 계속해서 증가
         float cycles = Time.time / period;
 
